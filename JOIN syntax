@@ -1,0 +1,39 @@
+### The top 10 countries for Rockbuster in terms of customer numbers
+```
+SELECT COU.country,
+COUNT(CUS.customer_id) AS customer_count
+FROM customer CUS
+  INNER JOIN address ADDR ON CUS.address_id = ADDR.address_id
+  INNER JOIN city CIT ON ADDR.city_id = CIT.city_id
+  INNER JOIN country COU ON CIT.country_id = COU.country_id
+GROUP BY COU.country
+ORDER BY customer_count DESC
+LIMIT 10;
+```
+### The top 10 cities that fall within any of the top 10 countries
+```
+SELECT CIT.city, COU.country,
+FROM customer CUS
+    INNER JOIN address ADDR ON CUS.address_id = ADDR.address_id
+    INNER JOIN city CIT ON ADDR.city_id = CIT.city_id
+    INNER JOIN country COU ON CIT.country_id = COU.country_id
+WHERE COU.country IN ('India', 'China', 'United States', 'Japan',
+'Mexico', 'Brazil', 'Russian Federation', 'Philippines', 'Turkey', 'Indonesia')
+GROUP BY CIT.city, COU.country
+ORDER BY COUNT (CUS.customer_id) DESC
+LIMIT 10;
+```
+### The top 5 customers in any of the top 10 cities
+```
+SELECT CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city,
+    SUM(PAY.amount) AS total_amount_paid
+FROM customer CUS
+    INNER JOIN address ADDR ON CUS.address_id = ADDR.address_id
+    INNER JOIN city CIT ON ADDR.city_id = CIT.city_id
+    INNER JOIN country COU ON CIT.country_id = COU.country_id
+    INNER JOIN payment PAY ON CUS.customer_id = PAY.customer_id
+WHERE CIT.city IN ('Aurora', 'Acua', 'Citrus Heights', 'Iwaki', 'Ambattur', 'Shanwei', 'So Leopoldo', 'Teboksary', 'Tianjin', 'Cianjur')
+GROUP BY CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city
+ORDER BY total_amount_paid DESC
+LIMIT 5;
+```
