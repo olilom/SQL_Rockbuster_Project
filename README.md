@@ -1,6 +1,6 @@
 # SQL_Rockbuster_Project
 ## Context
-Rockbuster Stealth Data Analysis Project from CareerFoundry
+Rockbuster Stealth Data Analysis Project from CareerFoundry.
 
 Task project and the management of Rockbuster Stealth asked a series of business questions to help develop a strategy for 2020. For this purpose, data analysis is required using PostgreSQL.
 ## Data Set
