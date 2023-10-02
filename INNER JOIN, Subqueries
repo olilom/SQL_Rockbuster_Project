@@ -1,4 +1,5 @@
-### Subquerie, the average amount paid by the top 5 customers
+### Subqueries
+#### The average amount paid by the top 5 customers
 ```
 SELECT AVG(total_amount_paid) AS average
 FROM
@@ -16,7 +17,7 @@ ORDER BY total_amount_paid DESC
 LIMIT 5) 
 AS total_amount_paid;
 ```
-### Subquerie, the top 5 customers are based within each country
+#### Subquerie, the top 5 customers are based within each country
 ```
 SELECT COU.country, 
 COUNT(DISTINCT CUS.customer_id) AS all_customer_count, 
