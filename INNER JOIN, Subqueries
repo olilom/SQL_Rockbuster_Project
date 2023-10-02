@@ -1,0 +1,45 @@
+### Subquerie, the average amount paid by the top 5 customers
+```
+SELECT AVG(total_amount_paid) AS average
+FROM
+(SELECT CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city,
+SUM(PAY.amount) AS total_amount_paid
+FROM customer CUS
+  INNER JOIN address ADDR ON CUS.address_id = ADDR.address_id
+  INNER JOIN city CIT on ADDR.city_id = CIT.city_id
+  INNER JOIN country COU on CIT.country_id = COU.country_id
+  INNER JOIN payment PAY ON CUS.customer_id = PAY.customer_id
+WHERE CIT.city IN('Aurora','Acua','Citrus Heights','Iwaki','Ambattur','Shanwei','So
+Leopoldo','Teboksary','Tianjin','Cianjur')
+GROUP BY CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city
+ORDER BY total_amount_paid DESC
+LIMIT 5) 
+AS total_amount_paid;
+```
+### Subquerie, the top 5 customers are based within each country
+```
+SELECT COU.country, 
+COUNT(DISTINCT CUS.customer_id) AS all_customer_count, 
+COUNT(top_5_customers) AS top_customer_count
+FROM customer CUS
+  INNER JOIN address ADDR ON CUS.address_id = ADDR.address_id
+  INNER JOIN city CIT on ADDR.city_id = CIT.city_id
+  INNER JOIN country COU on CIT.country_id = COU.country_id
+LEFT JOIN 
+(SELECT CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city,
+SUM(PAY.amount) AS total_amount_paid
+FROM customer CUS
+  INNER JOIN address ADDR ON CUS.address_id = ADDR.address_id
+  INNER JOIN city CIT on ADDR.city_id = CIT.city_id
+  INNER JOIN country COU on CIT.country_id = COU.country_id
+  INNER JOIN payment PAY ON CUS.customer_id = PAY.customer_id
+WHERE CIT.city IN('Aurora','Acua','Citrus Heights','Iwaki','Ambattur','Shanwei','So
+Leopoldo','Teboksary','Tianjin','Cianjur')
+GROUP BY CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city
+ORDER BY total_amount_paid DESC
+LIMIT 5) 
+AS top_5_customers ON CUS.customer_id = top_5_customers.customer_id
+GROUP BY COU.Country
+HAVING COUNT (top_5_customers) >0
+ORDER BY COUNT(top_5_customers), COUNT(CUS.customer_id) DESC
+```
