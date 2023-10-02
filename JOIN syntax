@@ -1,4 +1,5 @@
-### The top 10 countries for Rockbuster in terms of customer numbers
+### JOIN syntax
+#### The top 10 countries for Rockbuster in terms of customer numbers
 ```
 SELECT COU.country,
 COUNT(CUS.customer_id) AS customer_count
@@ -10,7 +11,7 @@ GROUP BY COU.country
 ORDER BY customer_count DESC
 LIMIT 10;
 ```
-### The top 10 cities that fall within any of the top 10 countries
+#### The top 10 cities that fall within any of the top 10 countries
 ```
 SELECT CIT.city, COU.country,
 FROM customer CUS
@@ -23,7 +24,7 @@ GROUP BY CIT.city, COU.country
 ORDER BY COUNT (CUS.customer_id) DESC
 LIMIT 10;
 ```
-### The top 5 customers in any of the top 10 cities
+#### The top 5 customers in any of the top 10 cities
 ```
 SELECT CUS.customer_id, CUS.first_name, CUS.last_name, COU.country, CIT.city,
     SUM(PAY.amount) AS total_amount_paid
